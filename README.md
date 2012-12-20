@@ -6,7 +6,7 @@ A simple client-side & server-side analytics library for Rails
 Just add the `isc_analytics` gem into your Gemfile
 
 ```ruby
-	gem 'isc_analytics'
+gem 'isc_analytics'
 ```
 
 Then create an initializer file in your `config/initialize` directory containing the initial config of your analytics.
@@ -16,8 +16,7 @@ Then create an initializer file in your `config/initialize` directory containing
 ISC Analytics current supports the following configurations:
 
 
-```
-ruby
+```ruby
 IscAnalytics.config.accounts = ANALYTIC_ACCOUNTS # an accounts objects (preferably using ConfigReader)
 IscAnalytics.config.namespace = 'App' # an alias which will gain all the analytics behivour in the clientside.
 ```
@@ -26,12 +25,11 @@ We recommend our other gem [ConfigReader](https://github.com/TheGiftsProject/con
 
 The analytics accounts should contain the following sub keys:
 
-```
-yml
-  kissmetrics_key: "KEY"
-  google_analytics_key: "KEY"
-  ipinfodb_key: "KEY"
-  optimizely_key: "KEY"
+```yml
+kissmetrics_key: "KEY"
+google_analytics_key: "KEY"
+ipinfodb_key: "KEY"
+optimizely_key: "KEY"
 ``` 
 
 Currently only the KISSMetrics and Google Analytics keys are mandatory although the gem isn't fully tested without the ipinfodb and optimizely options.
@@ -45,14 +43,14 @@ There are three points of usage for the isc_analytics gem, the first is includin
 To include isc_analytics in your app, after you install the gem.
 Add the following line inside your ApplicationController:
 
-```
+```ruby
 include IscAnalytics::ControllerSupport
 ```
 This will enable you to use the analytics object from your controllers and views.
 
 And the following line to your main application layout
 
-```
+```erb
 <%= add_analytics %>
 ```
 
@@ -62,7 +60,7 @@ This will embed all the needed html for the analytics to run (including the code
 
 After your install and include the isc_gem you can use the following functions in your client side javascript.
 
-```
+```javascript
 Analytics.trackEvent(<event name>, [<properties_hash>]);
 Analytics.setProperty(<property_key>, <property_value>);
 Analytics.setProperties(<properties_hash>);
