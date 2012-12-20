@@ -60,7 +60,7 @@ This will embed all the needed html for the analytics to run (including the code
 
 After your install and include the isc_gem you can use the following functions in your client side javascript.
 
-```javascript
+```js
 Analytics.trackEvent(<event name>, [<properties_hash>]);
 Analytics.setProperty(<property_key>, <property_value>);
 Analytics.setProperties(<properties_hash>);
