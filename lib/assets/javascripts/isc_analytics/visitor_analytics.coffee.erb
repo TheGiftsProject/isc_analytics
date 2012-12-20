@@ -1,0 +1,66 @@
+#= require isc_analytics/yepnope
+
+class window.VisitorAnalytics
+
+  ###
+  Save visitor data
+  @param {Object} sessionData - session data from session.js
+  ###
+  @save: (sessionData) ->
+    @sessionData = sessionData
+    @_saveAnalyticsData sessionData
+
+
+  ###
+  Has Location Data - checks to see the call to IPInfoDB didn't fail
+  @return {Boolean}
+  ###
+  @hasLocationData: ->
+    @sessionData.location and (@sessionData.location.statusCode is "OK")
+
+
+  ###
+  Save Analytics Data
+  ###
+  @_saveAnalyticsData: ->
+    if @sessionData
+      data = @sessionData
+      properties = {}
+      properties["Locale"] = data.locale.country + " " + data.locale.lang  if data.locale
+      if data.browser
+        properties["Browser"] = data.browser.browser + " " + data.browser.version
+        properties["OS"] = data.browser.os
+      if data.device
+        properties["Resolution"] = data.device.screen.width + " " + data.device.screen.height
+        properties["Is Tablet"] = data.device.is_tablet
+        properties["Is Phone"] = data.device.is_phone
+        properties["Is Mobile"] = data.device.is_mobile
+      if @hasLocationData()
+        properties["Country"] = @niceName(data.location.countryName)
+        properties["Region"] = @niceName(data.location.regionName)
+        properties["City"] = @niceName(data.location.cityName)
+        properties["Latitude"] = data.location.latitude
+        properties["Longitude"] = data.location.longitude
+      Analytics.setProperties properties
+
+  #niceName("one_two") //-> "One Two"
+  @niceName: (s) ->
+    parts = s.split(/_|-/)
+    for i in [0..parts.length-1]
+      parts[i] = @capitalize(parts[i])
+
+    parts.join(' ')
+
+  @capitalize: (str)->
+    str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+
+window.session =
+  options:
+    use_html5_location: false
+    gapi_location: false
+    ipinfodb_key: window.IPINFODB_KEY
+    location_cookie: ""
+    session_cookie: ""
+  start: (sessionData)->
+    VisitorAnalytics.save(sessionData)
+yepnope("<%= javascript_path("isc_analytics/session") %>")
