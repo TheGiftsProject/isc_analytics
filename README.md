@@ -22,9 +22,9 @@ IscAnalytics.config.accounts = ANALYTIC_ACCOUNTS # an accounts object (preferabl
 IscAnalytics.config.namespace = 'App' # an alias which will gain all the analytics behivour in the clientside.
 ```
 
-We recommend our other gem [ConfigReader](https://github.com/TheGiftsProject/configreader) to load the analytics_accounts data from a YML.
+We highly recommend you to use our other gem [ConfigReader](https://github.com/TheGiftsProject/configreader) to load the analytics_accounts data from a YML.
 
-The analytics accounts should contain the following sub keys:
+The accounts hash / EnvConfigReader should contain the following sub keys:
 
 ```yml
 kissmetrics_key: "KEY"
@@ -35,15 +35,19 @@ optimizely_key: "KEY"
 
 Currently only the KISSMetrics and Google Analytics keys are mandatory although the gem isn't fully tested without the ipinfodb and optimizely options.
 
-## Usage
+### Usage
 
-There are three points of usage for the isc_analytics gem, the first is including and starting to use the gem in your app. The second is Client side analytics events and the third is server side analytics events.
+The basic way to use isc_analytics is to simply follow the *Getting Started* step, and then you'll have visitor tracking
+set in KISSmetrics and Google Analytics.
+
+If you need more, there's a client-side & server-side tracking analytics. (Enabled just for KISSmetrics)
 
 ### Getting Started
 
 After you've installed the gem, do the following in order to include isc_analytics in your app:
 
 ## ApplicationController
+
 Add the following line inside your ApplicationController:
 
 ```ruby
