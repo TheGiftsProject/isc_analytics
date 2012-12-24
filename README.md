@@ -46,7 +46,7 @@ If you need more, there's a client-side & server-side tracking analytics. (Enabl
 
 After you've installed the gem, do the following in order to include isc_analytics in your app:
 
-## ApplicationController
+#### ApplicationController
 
 Add the following line inside your ApplicationController:
 
@@ -55,7 +55,7 @@ include IscAnalytics::ControllerSupport
 ```
 This will enable you to use the Analytics object from your controllers and views.
 
-## Application Layout
+#### Application Layout
 
 Add the following line to your main application layout, under the HTML head tag.
 
