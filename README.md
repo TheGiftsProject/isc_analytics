@@ -44,7 +44,7 @@ If you need more, there's a client-side & server-side tracking analytics API. (E
 
 ## Getting Started
 
-After you've installed the gem, do the following in order to include isc_analytics in your app:
+After you've finished configuring isc_analytics, do the following in order to include it in your app:
 
 #### ApplicationController
 
