@@ -35,14 +35,14 @@ optimizely_key: "KEY"
 
 Currently only the KISSMetrics and Google Analytics keys are mandatory although the gem isn't fully tested without the ipinfodb and optimizely options.
 
-### Usage
+## Usage
 
 The basic way to use isc_analytics is to simply follow the *Getting Started* step, and then you'll have visitor tracking
 set in KISSmetrics and Google Analytics.
 
 If you need more, there's a client-side & server-side tracking analytics. (Enabled just for KISSmetrics)
 
-### Getting Started
+## Getting Started
 
 After you've installed the gem, do the following in order to include isc_analytics in your app:
 
@@ -65,7 +65,7 @@ Add the following line to your main application layout, under the HTML head tag.
 
 This will embed all the needed HTML for the analytics to run (including the code for all the required services).
 
-### Client Side
+## Client Side
 
 Once you've included isc_analytics as we've explained above, you will have access to the following client-side API:
 
@@ -77,12 +77,12 @@ Analytics.identify(<identity>, [<properties_hash>]);
 Analytics.clearIdentity()
 ```
 
-#### Namespacing
+### Namespacing
 
 If you've configured a Namespace in the initializer, then we'll automatically alias all the functions to the Namespace of your choice for easy access.
 For example if I set my namespace as `App` then I'll be able to access the trackEvent function from `App.trackEvent`
 
-### Server Side
+## Server Side
 
 All the **client side event tracking is available from the server side** as well. Once you've included isc_analytics you can access the `analytics` object which will have methods identical to the client-side analytics methods.  
 For example you can call `analytics.trackEvent('user-visit')` and it will be persisted in the current user session and flushed into the user's browser next time he visits a page (via add_analytics). This mechanism is similar in behaviour to Rails' flash object.
