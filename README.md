@@ -1,5 +1,6 @@
 # ISC Analytics [![Build Status](https://travis-ci.org/TheGiftsProject/isc_analytics.png?branch=master)](https://travis-ci.org/TheGiftsProject/isc_analytics)
-A simple client-side & server-side analytics library for Rails
+A simple client-side & server-side analytics library for Rails. It currently supports only KISSmetrics for more advanced
+analytics features (trackEvent / setProperties) and Google Analytics just for tracking pageviews.
 
 ## Installation 
 
@@ -9,7 +10,7 @@ Just add the `isc_analytics` gem into your Gemfile
 gem 'isc_analytics'
 ```
 
-Then create an initializer file in your `config/initialize` directory containing the initial config of your analytics.
+Then add an initializer file in your `config/initializers` directory containing the initial config of your analytics.
 
 ## Configuration
 
@@ -17,7 +18,7 @@ ISC Analytics current supports the following configurations:
 
 
 ```ruby
-IscAnalytics.config.accounts = ANALYTIC_ACCOUNTS # an accounts objects (preferably using ConfigReader)
+IscAnalytics.config.accounts = ANALYTIC_ACCOUNTS # an accounts object (preferably using ConfigReader)
 IscAnalytics.config.namespace = 'App' # an alias which will gain all the analytics behivour in the clientside.
 ```
 
@@ -38,27 +39,31 @@ Currently only the KISSMetrics and Google Analytics keys are mandatory although 
 
 There are three points of usage for the isc_analytics gem, the first is including and starting to use the gem in your app. The second is Client side analytics events and the third is server side analytics events.
 
-### Including
+### Getting Started
 
-To include isc_analytics in your app, after you install the gem.
+After you've installed the gem, do the following in order to include isc_analytics in your app:
+
+## ApplicationController
 Add the following line inside your ApplicationController:
 
 ```ruby
 include IscAnalytics::ControllerSupport
 ```
-This will enable you to use the analytics object from your controllers and views.
+This will enable you to use the Analytics object from your controllers and views.
 
-And the following line to your main application layout
+## Application Layout
+
+Add the following line to your main application layout, under the HTML head tag.
 
 ```erb
 <%= add_analytics %>
 ```
 
-This will embed all the needed html for the analytics to run (including the code for all the required services.)
+This will embed all the needed HTML for the analytics to run (including the code for all the required services).
 
 ### Client Side
 
-After your install and include the isc_gem you can use the following functions in your client side javascript.
+Once you've included isc_analytics as we've explained above, you will have access to the following client-side API:
 
 ```js
 Analytics.trackEvent(<event name>, [<properties_hash>]);
@@ -69,13 +74,14 @@ Analytics.clearIdentity()
 ```
 
 #### Namespacing
-The cool thing is that if you configure a Namespace in the configuration then we'll automatically alias all the functions to the Namespace of your choice for easy access.
+
+If you've configured a Namespace in the initializer, then we'll automatically alias all the functions to the Namespace of your choice for easy access.
 For example if I set my namespace as `App` then I'll be able to access the trackEvent function from `App.trackEvent`
 
 ### Server Side
 
-All the **client side event tracking is available from the server side** as well. Once you inlcude isc_analytics you can access the `analytics` object which will have methods identical to the client-side analytics methods.  
-For example you can call `analytics.trackEvent('user-visit')` and it will be persisted in the current user session and flushed into the users browser next time he visits a page (via add_analytics). This mechanism is similar in behaivour to Rails' flash object.
+All the **client side event tracking is available from the server side** as well. Once you've included isc_analytics you can access the `analytics` object which will have methods identical to the client-side analytics methods.  
+For example you can call `analytics.trackEvent('user-visit')` and it will be persisted in the current user session and flushed into the user's browser next time he visits a page (via add_analytics). This mechanism is similar in behaviour to Rails' flash object.
  
 ### Opt out
 
