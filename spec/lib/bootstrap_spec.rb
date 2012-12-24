@@ -5,10 +5,10 @@ require 'isc_analytics'
 describe IscAnalytics do
 
   let(:accounts) {
-    OpenStruct.new(
+    OpenStruct.new({
         :kissmetrics_key => 'kissmetrics',
-        :google_analytics_key => 'google',
-    )
+        :google_analytics_key => 'google'
+                   })
   }
 
   before do
@@ -90,7 +90,5 @@ describe IscAnalytics do
       end
     end
   end
-
-  its(:analytics_scripts) { should_not be_nil }
 
 end
