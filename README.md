@@ -37,10 +37,10 @@ Currently only the KISSMetrics and Google Analytics keys are mandatory although 
 
 ## Usage
 
-The basic way to use isc_analytics is to simply follow the *Getting Started* step, and then you'll have visitor tracking
-set in KISSmetrics and Google Analytics.
+The basic way to use isc_analytics is to simply follow the **Getting Started** step, which will guide you on how
+to enable simple visitor tracking in KISSmetrics and Google Analytics
 
-If you need more, there's a client-side & server-side tracking analytics. (Enabled just for KISSmetrics)
+If you need more, there's a client-side & server-side tracking analytics API. (Enabled just for KISSmetrics)
 
 ## Getting Started
 
