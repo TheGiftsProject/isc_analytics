@@ -14,7 +14,7 @@ Then add an initializer file in your `config/initializers` directory containing 
 
 ## Configuration
 
-ISC Analytics current supports the following configurations:
+ISC Analytics currently supports the following configuration options:
 
 
 ```ruby
