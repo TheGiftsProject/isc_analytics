@@ -1,4 +1,4 @@
-# ISC Analytics
+# ISC Analytics [![Build Status](https://travis-ci.org/TheGiftsProject/isc_analytics.png?branch=master)](https://travis-ci.org/TheGiftsProject/isc_analytics)
 A simple client-side & server-side analytics library for Rails
 
 ## Installation 
