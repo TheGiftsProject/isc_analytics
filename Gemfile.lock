@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    isc_analytics (0.5.1)
+    isc_analytics (0.5.2)
       activesupport
       configreader
       controller_support
