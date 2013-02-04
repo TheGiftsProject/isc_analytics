@@ -6,7 +6,7 @@ module IscAnalytics
     include KISSMetricsClientAPI
 
     def initialize(options = {})
-      validate_accounts_config
+      validate_providers_config
       @session = options[:session] || {}
       @opt_out = false
     end
@@ -23,35 +23,44 @@ module IscAnalytics
       Tags.scripts(analytics_scripts)
     end
 
+    def provider_script_tags
+      Tags.scripts(provider_scripts)
+    end
+
+    def queued_events
+      return nil if opt_out?
+      generate_queue_js
+    end
+
     private
 
     def analytics_scripts
       scripts = []
-      scripts.concat Services.scripts(config.accounts) unless opt_out?
+      scripts.concat provider_scripts
       scripts << isc_analytics_tag
       scripts << extend_analytics(config.namespace)
-      scripts << queued_events unless opt_out?
-      scripts
+      scripts << Tags.script_tag(queued_events) unless queued_events.blank?
+      scripts.compact
+    end
+
+    def provider_scripts
+      opt_out? ? [] : Services.scripts(config.providers)
     end
 
     def config
       IscAnalytics.config
     end
 
-    def validate_accounts_config
-      raise IscAnalytics::NoConfigSpecified.new('You have specified a nil config, you must specify an EnvConfigReader of your Analytics Accounts keys') if config.accounts.nil?
-
-      if config.accounts.kissmetrics_key.nil?
-        raise IscAnalytics::MissingConfigParams.new('KISSMetrics configuration key isn\'t specified in your config.')
-      elsif config.accounts.google_analytics_key.nil?
-        raise IscAnalytics::MissingConfigParams.new('Google Analytics configuration key isn\'t specified in your config.')
+    def validate_providers_config
+      if config.providers.nil?
+        raise IscAnalytics::NoConfigSpecified.new('You have specified a nil config, you must specify an EnvConfigReader of your Analytics providers keys')
       end
-    end
 
-    def queued_events
-      queue_js = generate_queue_js
-      return nil if queue_js.blank?
-      Tags.script_tag(queue_js)
+      if config.providers.kissmetrics.nil?
+        raise IscAnalytics::MissingConfigParams.new('KISSMetrics configuration isn\'t specified in your config.')
+      elsif config.providers.google_analytics.nil?
+        raise IscAnalytics::MissingConfigParams.new('Google Analytics configuration isn\'t specified in your config.')
+      end
     end
 
     def extend_analytics(namespace)

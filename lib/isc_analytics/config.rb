@@ -1,15 +1,15 @@
 module IscAnalytics
   class Config
 
-    attr_accessor :accounts, :namespace
+    attr_accessor :providers, :namespace
+
+    def initialize(providers, namespace, amd=false)
+      @providers = providers
+      @namespace = namespace
+    end
 
     def self.default
-      new.instance_eval {
-        @accounts = nil
-        @namespace = nil
-
-        self
-      }
+      new(nil, nil)
     end
   end
 end
