@@ -4,36 +4,63 @@ require 'isc_analytics'
 
 describe IscAnalytics do
 
-  let(:accounts) {
+  let(:kissmetrics_config) {
+    {
+      "key" => 'kissmetrics',
+      "dryrun" => false
+    }
+  }
+
+  let(:google_analytics_config) {
+    {
+      "key" => 'google'
+    }
+  }
+
+  let(:optimizely_config) {
+    {
+      "key" => 'optimizely'
+    }
+  }
+
+  let(:ipinfodb_config) {
+    {
+      "key" => 'ipinfodb'
+    }
+  }
+
+  let(:providers) {
     OpenStruct.new({
-        :kissmetrics_key => 'kissmetrics',
-        :google_analytics_key => 'google'
-                   })
+      :kissmetrics => kissmetrics_config,
+      :google_analytics => google_analytics_config,
+      :optimizely => optimizely_config,
+      :ipinfodb => ipinfodb_config
+    })
   }
 
   before do
-    IscAnalytics.config.accounts = accounts
+    IscAnalytics.config.providers = providers
   end
 
 
   describe :validate_config do
-    it 'should raise NoConfigSpecified if no accounts set' do
+    it 'should raise NoConfigSpecified if no providers set' do
       expect do
-        IscAnalytics.config.accounts = nil
+        IscAnalytics.config.providers = nil
         IscAnalytics::Bootstrap.new
       end.to raise_error(IscAnalytics::NoConfigSpecified)
     end
 
-    it 'should raise MissingConfigParams if no kissmetrics_key set' do
+    it 'should raise MissingConfigParams if no kissmetrics.key set' do
       expect do
-        IscAnalytics.config.accounts = OpenStruct.new(:google_analytics_key => 'google')
+        IscAnalytics.config.providers = OpenStruct.new(:google_analytics => google_analytics_config)
         IscAnalytics::Bootstrap.new
       end.to raise_error(IscAnalytics::MissingConfigParams)
     end
 
-    it 'should raise MissingConfigParams if no google_analytics_key set' do
+    it 'should raise MissingConfigParams if no google_analytics.key set' do
       expect do
-        IscAnalytics.config.accounts = OpenStruct.new(:kissmetrics_key => 'kiss')
+        IscAnalytics.config.providers = OpenStruct.new(:kissmetrics => kissmetrics_config)
         IscAnalytics::Bootstrap.new
       end.to raise_error(IscAnalytics::MissingConfigParams)
     end
@@ -81,12 +108,14 @@ describe IscAnalytics do
         IscAnalytics::Services.should_not_receive(:scripts)
         analytics_scripts
       end
-      it 'should not include queue' do
-        subject.should_not_receive :queued_events
-        analytics_scripts
-      end
       it 'should include the opt out isc_analytics_asset' do
         analytics_scripts.should include '<script type=\'text/javascript\' src=\'/assets/isc_analytics/opt_out_analytics.js\'></script>'
+      end
+    end
+
+    describe :queued_events do
+      it 'should be empty' do
+        subject.queued_events.should == nil
       end
     end
   end

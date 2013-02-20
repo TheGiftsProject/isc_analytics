@@ -106,6 +106,21 @@ module IscAnalytics
           queue.should be_empty
         end
       end
+
+      describe :keep_km_url_event do
+        let(:kme) { "kme" }
+        let(:km_props) { { "km_one" => "test1", "km_two" => "test2" } }
+
+        it 'should track kme' do
+          subject.should_receive(:track_event).with(kme, {})
+          subject.keep_km_url_event({ "kme" => kme })
+        end
+
+        it 'should track properties' do
+          subject.should_receive(:track_event).with(any_args, { "one" => "test1", "two" => "test2" })
+          subject.keep_km_url_event({ "kme" => kme }.merge(km_props))
+        end
+      end
     end
 
   end

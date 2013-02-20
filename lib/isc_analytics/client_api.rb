@@ -43,6 +43,22 @@ module IscAnalytics
       buffer
     end
 
+    def keep_km_url_event(params)
+      kme = params["kme"]
+
+      if kme
+        props = {}
+        params.each do |key, value|
+          if key.to_s.start_with?("km_")
+            prop_name = key[3..-1]
+            props[prop_name] = value
+          end
+        end
+
+        track_event(kme, props)
+      end
+    end
+
     private
 
     def enqueue(name, *args)

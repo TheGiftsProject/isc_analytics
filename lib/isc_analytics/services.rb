@@ -4,13 +4,13 @@ require 'active_support/core_ext/object/blank'
 module IscAnalytics
   class Services
 
-    def self.scripts(accounts)
-      [
-          kissmetrics_tag(accounts.kissmetrics_key),
-          google_tag(accounts.google_analytics_key),
-          optimizely_tag(accounts.optimizely_key),
-          ipinfodb_tag(accounts.ipinfodb_key)
-      ]
+    def self.scripts(providers_config)
+      scripts = []
+      scripts << kissmetrics_tag(providers_config.kissmetrics["key"]) if providers_config.kissmetrics
+      scripts << google_tag(providers_config.google_analytics["key"]) if providers_config.google_analytics
+      scripts << optimizely_tag(providers_config.optimizely["key"]) if providers_config.optimizely
+      scripts << ipinfodb_tag(providers_config.ipinfodb["key"]) if providers_config.ipinfodb
+      scripts
     end
 
     def self.kissmetrics_tag(key)

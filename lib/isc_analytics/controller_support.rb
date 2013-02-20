@@ -27,6 +27,10 @@ module IscAnalytics
       isc_analytics
     end
 
+    def keep_km_url_event
+      analytics.keep_km_url_event(params)
+    end
+
     private
 
     def isc_analytics
