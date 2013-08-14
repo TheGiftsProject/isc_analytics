@@ -7,7 +7,7 @@ module IscAnalytics
         if properties.blank?
           enqueue 'identify', identifier
         else
-          enqueue 'identify', identifier, properties
+          enqueue 'identify', identifier, escape_properties(properties)
         end
         set_identity(identifier)
       end
@@ -21,19 +21,19 @@ module IscAnalytics
     def track_event(name, properties = {})
       unless name.blank?
         if properties.blank?
-          enqueue 'trackEvent', name
+          enqueue 'trackEvent', CGI::escapeHTML(name)
         else
-          enqueue 'trackEvent', name, properties
+          enqueue 'trackEvent', CGI::escapeHTML(name), escape_properties(properties)
         end
       end
     end
 
     def set_properties(properties = {})
-      enqueue('setProperties', properties) unless properties.blank?
+      enqueue('setProperties', escape_properties(properties)) unless properties.blank?
     end
 
     def set_property(property, value = nil)
-      enqueue('setProperty', property, value) unless property.blank?
+      enqueue('setProperty', CGI::escapeHTML(property), value ? CGI::escapeHTML(value) : value) unless property.blank?
     end
 
     # reset_queue makes sure that subsequent calls will not send events that have already been sent.
@@ -89,6 +89,10 @@ module IscAnalytics
 
     def remove_duplicated_identify
       queue.delete_if { |api_call| !(/identify/ =~ api_call).nil? }
+    end
+
+    def escape_properties(properties)
+      Hash[properties.map{ |k, v| [(k.kind_of?(String) ? CGI::escapeHTML(k) : k), (v.kind_of?(String) ? CGI::escapeHTML(v) : v)] }]
     end
 
   end

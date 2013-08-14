@@ -79,6 +79,12 @@ module IscAnalytics
           subject.track_event(nil)
           queue.should be_empty
         end
+
+        it 'should encode the event name' do
+          event_name = 'event</script><script>console.log(1)</script>'
+          subject.track_event(event_name)
+          queue.should include "trackEvent(\"#{CGI::escapeHTML(event_name)}\");"
+        end
       end
 
       describe :set_property do
@@ -94,6 +100,13 @@ module IscAnalytics
           subject.set_property(nil)
           queue.should be_empty
         end
+
+        it 'should encode the propery name and value' do
+          key = 'key<script>'
+          value = 'value<script>'
+          subject.set_property(key, value)
+          queue.should include "setProperty(\"#{CGI::escapeHTML(key)}\",\"#{CGI::escapeHTML(value)}\");"
+        end
       end
 
       describe :set_properties do
@@ -104,6 +117,13 @@ module IscAnalytics
         it 'should not enqueue if no properties given' do
           subject.set_properties(nil)
           queue.should be_empty
+        end
+
+        it 'should encode property names and values' do
+          key = 'key<script>'
+          value = 'value<script>'
+          subject.set_properties({ key => value })
+          queue.should include "setProperties({\"#{CGI::escapeHTML(key)}\":\"#{CGI::escapeHTML(value)}\"});"
         end
       end
 
